@@ -1,15 +1,23 @@
-﻿namespace Polis_1984;
+﻿using System.Text.Json;
+
+namespace Polis_1984;
 
 class Program
 {
     static void Main(string[] args)
     {
+        List<Utryckning> listUtr = new List<Utryckning>();
         Utryckning.nyUtryckning();
+
     }
 }
 
 class Utryckning
 {
+    public string typ {get; set;}
+    public string plats {get; set;}
+    public string tidpunkt {get; set;}
+    public new List<Polis> poliser = new List<Polis>();
 
     public static void nyUtryckning()
     {
@@ -35,6 +43,16 @@ class Utryckning
         {
             Console.WriteLine(poliser[i].namn + " tjänstenumret: " + poliser[i].tjanstenummer);
         }
+        var nyUtryckning = new Utryckning();
+        {
+        nyUtryckning.typ = typ;
+        nyUtryckning.plats = plats;
+        nyUtryckning.tidpunkt = tidpunkt;
+        nyUtryckning.poliser = poliser;
+        }
+        string fileName = "Utryckning.json";
+        string jsonString = JsonSerializer.Serialize(nyUtryckning);
+        File.WriteAllText(fileName, jsonString);
     }
 }
 
