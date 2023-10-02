@@ -33,7 +33,7 @@ class Utryckning
         Console.WriteLine($"En utryckning av typen {typ} skedde på platsen {plats} vid tid {tidpunkt}. Poliser närvarande var:");
         for(int i = 0; i < antal; i++)
         {
-            Console.WriteLine(poliser[i].namn + " tjänstenummer: " + poliser[i].tjanstenummer);
+            Console.WriteLine(poliser[i].namn + " tjänstenumret: " + poliser[i].tjanstenummer);
         }
     }
 }
