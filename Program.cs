@@ -15,6 +15,9 @@ class Program
 
 class Utryckning
 {
+    public int Rapportnummer { get; set; }
+    public string Utryckningsdatum { get; set; }
+    public string Polisstation { get; set; }
     public string typ {get; set;}
     public string plats {get; set;}
     public string tidpunkt {get; set;}
@@ -28,9 +31,9 @@ class Utryckning
         string typ = Console.ReadLine()!;
         Console.Write("Vilken plats har utryckningen skett på?: ");
         string plats = Console.ReadLine()!;
-        Console.Write("Vilken tid skedde utryckningen?: ");
+        Console.Write("Ange tid för utryckningen (HH:mm): ");
         string tidpunkt = Console.ReadLine()!;
-        Console.Write("Hur många poliser var vid utryckningen?: ");
+        Console.Write("Hur många poliser var närvarande vid utryckningen?: ");
         int antal = Convert.ToInt32(Console.ReadLine());
         for(int i = 1; i <= antal; i++)
         {
@@ -41,20 +44,35 @@ class Utryckning
             poliser.Add(new Polis(namn, tjanstenummer));
             
         }
-        Console.Write("Skriv en rapport om utryckningen: ");
-        string rapport = Console.ReadLine()!;
+        
         Console.Clear();
-
+        
         Console.WriteLine($"En utryckning av typen {typ} skedde på platsen {plats} vid tid {tidpunkt}. Poliser närvarande var:");
         for(int i = 0; i < antal; i++)
         {
             Console.WriteLine(poliser[i].namn + " tjänstenumret: " + poliser[i].tjanstenummer);
         }
+            Console.WriteLine("\nDags att skriva en rapport");
+            Console.Write("Ange rapportnummer: ");
+            int rapportnummer = Convert.ToInt32(Console.ReadLine());
 
-            Console.WriteLine($"\nBeskrivning: {rapport}");
+            Console.Write("Ange datum för utryckningen (yyyy-MM-dd): ");
+            string utryckningsdatum =Console.ReadLine();
+
+
+            Console.Write("Ange namnet på polisstationen som hanterar ärendet: ");
+            string polisstation = Console.ReadLine();
+
+            Console.Write("Beskriv vad som skett under utryckningen: ");
+            string rapport = Console.ReadLine()!;
+        
+
+            Console.WriteLine($"\nRapportnr: {rapportnummer},\n{utryckningsdatum},\nAnsvarig station: {polisstation},\nBeskrivning: {rapport}");
 
         var nyUtryckning = new Utryckning();
         {
+        nyUtryckning.Rapportnummer = rapportnummer;
+        nyUtryckning.Utryckningsdatum = utryckningsdatum;
         nyUtryckning.typ = typ;
         nyUtryckning.plats = plats;
         nyUtryckning.tidpunkt = tidpunkt;
