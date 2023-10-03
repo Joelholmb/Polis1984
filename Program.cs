@@ -8,6 +8,7 @@ class Program
     {
         List<Utryckning> listUtr = new List<Utryckning>();
         Utryckning.nyUtryckning();
+        
 
     }
 }
@@ -17,6 +18,7 @@ class Utryckning
     public string typ {get; set;}
     public string plats {get; set;}
     public string tidpunkt {get; set;}
+    public string rapport { get; set; }
     public new List<Polis> poliser = new List<Polis>();
 
     public static void nyUtryckning()
@@ -37,18 +39,27 @@ class Utryckning
             Console.Write($"Ange tjänstenummer för polis {i}: ");
             int tjanstenummer = Convert.ToInt32(Console.ReadLine());
             poliser.Add(new Polis(namn, tjanstenummer));
+            
         }
+        Console.Write("Skriv en rapport om utryckningen: ");
+        string rapport = Console.ReadLine()!;
+        Console.Clear();
+
         Console.WriteLine($"En utryckning av typen {typ} skedde på platsen {plats} vid tid {tidpunkt}. Poliser närvarande var:");
         for(int i = 0; i < antal; i++)
         {
             Console.WriteLine(poliser[i].namn + " tjänstenumret: " + poliser[i].tjanstenummer);
         }
+
+            Console.WriteLine($"\nBeskrivning: {rapport}");
+
         var nyUtryckning = new Utryckning();
         {
         nyUtryckning.typ = typ;
         nyUtryckning.plats = plats;
         nyUtryckning.tidpunkt = tidpunkt;
         nyUtryckning.poliser = poliser;
+        nyUtryckning.rapport = rapport;
         }
         string fileName = "Utryckning.json";
         string jsonString = JsonSerializer.Serialize(nyUtryckning);
