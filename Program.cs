@@ -70,6 +70,9 @@ class Utryckning
 
     public static void nyUtryckning()
     {
+        string fileName = "Utryckning.json";
+        string jsonString = File.ReadAllText(fileName);
+        List<Utryckning> listUtr = JsonSerializer.Deserialize<List<Utryckning>>(jsonString)!;
         List<Polis> valdaPoliser = new List<Polis>();
         Console.Write("Vilken typ av utryckning är det?: ");
         string typ = Console.ReadLine()!;
@@ -117,7 +120,10 @@ class Utryckning
         nyUtryckning.Typ = typ;
         nyUtryckning.Plats = plats;
         nyUtryckning.Tidpunkt = tidpunkt;
-        nyUtryckning.poliser = valdaPoliser;
+        for(int i = 0; i < valdaPoliser.Count; i++)
+        {
+        nyUtryckning.poliser += $"|{valdaPoliser[i].namn} {valdaPoliser[i].tjanstenummer}|";
+        }
         nyUtryckning.Rapport = rapport;
         }
         listUtr.Add(nyUtryckning);
