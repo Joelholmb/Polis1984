@@ -4,13 +4,57 @@ namespace Polis_1984;
 
 class Program
 {
+    static void TaBortPolis(Polis polis)
+{
+    listaAvPoliser.Remove(polis);
+}
+    static List<Polis> listaAvPoliser = new List<Polis>();
+
     static void Main(string[] args)
     {
+        listaAvPoliser.Add(new Polis("Kalle, tjänstenummer: 4371.", 1));
+        listaAvPoliser.Add(new Polis("Sudden, tjänstenummer: 1344.", 2));
+        listaAvPoliser.Add(new Polis("Majoren, tjänstenummer: 5776.", 3));
+        
+        
         List<Utryckning> listUtr = new List<Utryckning>();
         Utryckning.nyUtryckning();
         
 
     }
+    
+    static public Polis ValjPolis(List<Polis> valdaPoliser)
+    {
+        Console.WriteLine("Välj en polis från listan:");
+        for (int i = 0; i < listaAvPoliser.Count; i++)
+        {
+        Console.WriteLine($"{i + 1}. {listaAvPoliser[i].namn}");
+        }
+
+            int val;
+            while (true)
+            {
+                if (int.TryParse(Console.ReadLine(), out val) && val >= 1 && val <= listaAvPoliser.Count)
+                {
+                    Polis valdPolis = listaAvPoliser[val - 1];
+                    if (!valdaPoliser.Contains(valdPolis))
+                    {
+                        valdaPoliser.Add(valdPolis);
+                        TaBortPolis(valdPolis);
+                        return valdPolis;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Denna polis har redan valts. Välj en annan.");
+                    }
+                }    
+                else
+                {
+                    Console.WriteLine("Personen finns inte i listan. Försök igen.");
+                }
+            }
+
+    }    
 }
 
 class Utryckning
@@ -26,7 +70,7 @@ class Utryckning
 
     public static void nyUtryckning()
     {
-        List<Polis> poliser = new List<Polis>();
+        List<Polis> valdaPoliser = new List<Polis>();
         Console.Write("Vilken typ av utryckning är det?: ");
         string typ = Console.ReadLine()!;
         Console.Write("Vilken plats har utryckningen skett på?: ");
@@ -37,12 +81,9 @@ class Utryckning
         int antal = Convert.ToInt32(Console.ReadLine());
         for(int i = 1; i <= antal; i++)
         {
-            Console.Write($"Ange namn för polis {i}: ");
-            string namn = Console.ReadLine()!;
-            Console.Write($"Ange tjänstenummer för polis {i}: ");
-            int tjanstenummer = Convert.ToInt32(Console.ReadLine());
-            poliser.Add(new Polis(namn, tjanstenummer));
-            
+            Polis valdPolis = Program.ValjPolis(valdaPoliser);
+            valdaPoliser.Add(valdPolis);
+            Console.Clear();
         }
         
         Console.Clear();
@@ -50,7 +91,7 @@ class Utryckning
         Console.WriteLine($"En utryckning av typen {typ} skedde på platsen {plats} vid tid {tidpunkt}. Poliser närvarande var:");
         for(int i = 0; i < antal; i++)
         {
-            Console.WriteLine(poliser[i].namn + " tjänstenumret: " + poliser[i].tjanstenummer);
+            Console.WriteLine($"{valdaPoliser[i].namn} {valdaPoliser[i].tjanstenummer}");
         }
             Console.WriteLine("\nDags att skriva en rapport");
             Console.Write("Ange rapportnummer: ");
@@ -76,7 +117,7 @@ class Utryckning
         nyUtryckning.typ = typ;
         nyUtryckning.plats = plats;
         nyUtryckning.tidpunkt = tidpunkt;
-        nyUtryckning.poliser = poliser;
+        nyUtryckning.poliser = valdaPoliser;
         nyUtryckning.rapport = rapport;
         }
         string fileName = "Utryckning.json";
