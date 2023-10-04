@@ -1,4 +1,6 @@
-﻿using System.Text.Json;
+﻿using System;
+using System.Collections.Generic;
+using System.Text.Json;
 
 namespace Polis_1984;
 
@@ -9,6 +11,7 @@ class Program
     listaAvPoliser.Remove(polis);
 }
     static List<Polis> listaAvPoliser = new List<Polis>();
+    static List<Polis> valdaPoliser = new List<Polis>();
 
     static void Main(string[] args)
     {
@@ -70,7 +73,7 @@ class Utryckning
 
     public static void nyUtryckning()
     {
-        List<Polis> valdaPoliser = new List<Polis>();
+        
         Console.Write("Vilken typ av utryckning är det?: ");
         string typ = Console.ReadLine()!;
         Console.Write("Vilken plats har utryckningen skett på?: ");
@@ -120,9 +123,9 @@ class Utryckning
         nyUtryckning.poliser = valdaPoliser;
         nyUtryckning.Rapport = rapport;
         }
-        listUtr.Add(nyUtryckning);
-        jsonString = JsonSerializer.Serialize(listUtr);
-        File.WriteAllText(fileName, jsonString);
+        //listUtr.Add(nyUtryckning);
+        //jsonString = JsonSerializer.Serialize(listUtr);
+        //File.WriteAllText(fileName, jsonString);
     }
 }
 
