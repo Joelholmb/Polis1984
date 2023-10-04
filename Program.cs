@@ -6,7 +6,6 @@ class Program
 {
     static void Main(string[] args)
     {
-        List<Utryckning> listUtr = new List<Utryckning>();
         Utryckning.nyUtryckning();
         
 
@@ -18,14 +17,17 @@ class Utryckning
     public int Rapportnummer { get; set; }
     public string Utryckningsdatum { get; set; }
     public string Polisstation { get; set; }
-    public string typ {get; set;}
-    public string plats {get; set;}
-    public string tidpunkt {get; set;}
-    public string rapport { get; set; }
-    public new List<Polis> poliser = new List<Polis>();
+    public string Typ {get; set;}
+    public string Plats {get; set;}
+    public string Tidpunkt {get; set;}
+    public string Rapport { get; set; }
+    public string poliser {get; set;}
 
     public static void nyUtryckning()
     {
+        string fileName = "Utryckning.json";
+        string jsonString = File.ReadAllText(fileName);
+        List<Utryckning> listUtr = JsonSerializer.Deserialize<List<Utryckning>>(jsonString)!;
         List<Polis> poliser = new List<Polis>();
         Console.Write("Vilken typ av utryckning är det?: ");
         string typ = Console.ReadLine()!;
@@ -73,14 +75,18 @@ class Utryckning
         {
         nyUtryckning.Rapportnummer = rapportnummer;
         nyUtryckning.Utryckningsdatum = utryckningsdatum;
-        nyUtryckning.typ = typ;
-        nyUtryckning.plats = plats;
-        nyUtryckning.tidpunkt = tidpunkt;
-        nyUtryckning.poliser = poliser;
-        nyUtryckning.rapport = rapport;
+        nyUtryckning.Typ = typ;
+        nyUtryckning.Plats = plats;
+        nyUtryckning.Tidpunkt = tidpunkt;
+        for(int i = 0; i < poliser.Count; i++)
+        {
+            nyUtryckning.poliser += $"|{poliser[i].namn} {poliser[i].tjanstenummer}|";
         }
-        string fileName = "Utryckning.json";
-        string jsonString = JsonSerializer.Serialize(nyUtryckning);
+        nyUtryckning.Rapport = rapport;
+        nyUtryckning.Polisstation = polisstation;
+        }
+        listUtr.Add(nyUtryckning);
+        jsonString = JsonSerializer.Serialize(listUtr);
         File.WriteAllText(fileName, jsonString);
     }
 }
