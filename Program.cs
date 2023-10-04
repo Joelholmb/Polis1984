@@ -1,64 +1,74 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text.Json;
+﻿using System.Text.Json;
 
 namespace Polis_1984;
 
-class Program
-{
-    static void TaBortPolis(Polis polis)
-{
-    listaAvPoliser.Remove(polis);
-}
-    static List<Polis> listaAvPoliser = new List<Polis>();
-    static List<Polis> valdaPoliser = new List<Polis>();
-
-    static void Main(string[] args)
+    class PolisLista
     {
-        listaAvPoliser.Add(new Polis("Kalle, tjänstenummer: 4371.", 1));
-        listaAvPoliser.Add(new Polis("Sudden, tjänstenummer: 1344.", 2));
-        listaAvPoliser.Add(new Polis("Majoren, tjänstenummer: 5776.", 3));
-        
-        
-        List<Utryckning> listUtr = new List<Utryckning>();
-        Utryckning.nyUtryckning();
-        
+        public List<Polis> listaAvPoliser = new List<Polis>();
 
-    }
-    
-    static public Polis ValjPolis(List<Polis> valdaPoliser)
-    {
-        Console.WriteLine("Välj en polis från listan:");
-        for (int i = 0; i < listaAvPoliser.Count; i++)
+        public PolisLista()
         {
-        Console.WriteLine($"{i + 1}. {listaAvPoliser[i].namn}");
+            
+            listaAvPoliser.Add(new Polis("Kalle", 4334));
+            listaAvPoliser.Add(new Polis("Sudden", 7754));
+            listaAvPoliser.Add(new Polis("Majoren", 1239));
         }
 
-            int val;
-            while (true)
+        public List<Polis> HämtaPoliser()
+        {
+            return listaAvPoliser;
+        }
+
+        
+    }
+
+    class Program
+    {
+            static PolisLista polisLista = new PolisLista();
+
+            static void Main(string[] args)
             {
-                if (int.TryParse(Console.ReadLine(), out val) && val >= 1 && val <= listaAvPoliser.Count)
-                {
-                    Polis valdPolis = listaAvPoliser[val - 1];
-                    if (!valdaPoliser.Contains(valdPolis))
-                    {
-                        valdaPoliser.Add(valdPolis);
-                        TaBortPolis(valdPolis);
-                        return valdPolis;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Denna polis har redan valts. Välj en annan.");
-                    }
-                }    
-                else
-                {
-                    Console.WriteLine("Personen finns inte i listan. Försök igen.");
-                }
+                List<Utryckning> listUtr = new List<Utryckning>();
+                Utryckning.nyUtryckning();
+            }
+            
+        static public Polis ValjPolis(List<Polis> valdaPoliser)
+        {
+            Console.WriteLine("Välj en polis från listan:");
+            
+            List<Polis> listaAvPoliser = polisLista.HämtaPoliser();
+            for (int i = 0; i < listaAvPoliser.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {listaAvPoliser[i].namn}");
             }
 
-    }    
-}
+                int val;
+                while (true)
+                break;
+
+                {
+                    if (int.TryParse(Console.ReadLine(), out val) && val >= 1 && val <= listaAvPoliser.Count)
+                    {
+                        Polis valdPolis = listaAvPoliser[val - 1];
+                        if (!valdaPoliser.Contains(valdPolis))
+                        {
+                            valdaPoliser.Add(valdPolis);
+                            return valdPolis;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Denna polis har redan valts. Välj en annan.");
+                        }
+                    }    
+                    else
+                    {
+                    Console.WriteLine("Personen finns inte i listan. Försök igen.");
+                    }
+                }
+                return null;
+        }
+    
+    }
 
 class Utryckning
 {
@@ -73,7 +83,10 @@ class Utryckning
 
     public static void nyUtryckning()
     {
-        
+        string fileName = "Utryckning.json";
+        string jsonString = File.ReadAllText(fileName);
+        List<Utryckning> listUtr = JsonSerializer.Deserialize<List<Utryckning>>(jsonString)!;
+        List<Polis> valdaPoliser = new List<Polis>();
         Console.Write("Vilken typ av utryckning är det?: ");
         string typ = Console.ReadLine()!;
         Console.Write("Vilken plats har utryckningen skett på?: ");
@@ -120,12 +133,15 @@ class Utryckning
         nyUtryckning.Typ = typ;
         nyUtryckning.Plats = plats;
         nyUtryckning.Tidpunkt = tidpunkt;
-        nyUtryckning.poliser = valdaPoliser;
+        for(int i = 0; i < valdaPoliser.Count; i++)
+        {
+        nyUtryckning.poliser += $"|{valdaPoliser[i].namn} {valdaPoliser[i].tjanstenummer}|";
+        }
         nyUtryckning.Rapport = rapport;
         }
-        //listUtr.Add(nyUtryckning);
-        //jsonString = JsonSerializer.Serialize(listUtr);
-        //File.WriteAllText(fileName, jsonString);
+        listUtr.Add(nyUtryckning);
+        jsonString = JsonSerializer.Serialize(listUtr);
+        File.WriteAllText(fileName, jsonString);
     }
 }
 
