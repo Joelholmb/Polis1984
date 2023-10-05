@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 
+
 namespace Polis_1984;
 
     class PolisLista
@@ -24,7 +25,7 @@ namespace Polis_1984;
 
     class Program
     {
-            static PolisLista polisLista = new PolisLista();
+            public PolisLista polisLista = new PolisLista();
 
             static void Main(string[] args)
             {
@@ -32,7 +33,7 @@ namespace Polis_1984;
                 Utryckning.nyUtryckning();
             }
             
-        static public Polis ValjPolis(List<Polis> valdaPoliser)
+        public Polis ValjPolis(List<Polis> valdaPoliser)
         {
             Console.WriteLine("Välj en polis från listan:");
             
@@ -44,7 +45,7 @@ namespace Polis_1984;
 
                 int val;
                 while (true)
-                break;
+                
 
                 {
                     if (int.TryParse(Console.ReadLine(), out val) && val >= 1 && val <= listaAvPoliser.Count)
@@ -53,7 +54,9 @@ namespace Polis_1984;
                         if (!valdaPoliser.Contains(valdPolis))
                         {
                             valdaPoliser.Add(valdPolis);
+                            listaAvPoliser.RemoveAt(val - 1);
                             return valdPolis;
+                        
                         }
                         else
                         {
@@ -65,7 +68,7 @@ namespace Polis_1984;
                     Console.WriteLine("Personen finns inte i listan. Försök igen.");
                     }
                 }
-                return null;
+                
         }
     
     }
@@ -80,6 +83,8 @@ class Utryckning
     public string Tidpunkt {get; set;}
     public string Rapport { get; set; }
     public string poliser {get; set;}
+
+    
 
     public static void nyUtryckning()
     {
@@ -100,7 +105,9 @@ class Utryckning
             Polis valdPolis = Program.ValjPolis(valdaPoliser);
             valdaPoliser.Add(valdPolis);
             Console.Clear();
+            
         }
+         
         
         Console.Clear();
         
