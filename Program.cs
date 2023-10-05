@@ -22,8 +22,11 @@ namespace Polis_1984;
         {
             
             listaAvPoliser.Add(new Polis("Kalle", 4334));
+            
             listaAvPoliser.Add(new Polis("Sudden", 7754));
+           
             listaAvPoliser.Add(new Polis("Majoren", 1239));
+
         }
 
         public List<Polis> HämtaPoliser()
@@ -51,7 +54,7 @@ namespace Polis_1984;
             List<Polis> listaAvPoliser = polisLista.HämtaPoliser();
             for (int i = 0; i < listaAvPoliser.Count; i++)
             {
-                Console.WriteLine($"{i + 1}. {listaAvPoliser[i].Namn} (Tjänstenummer: {listaAvPoliser[i].Tjanstenummer})");
+                Console.WriteLine($"{i + 1}. {listaAvPoliser[i].Namn} (Tjänstenummer: {listaAvPoliser[i].Tjanstenummer}){Environment.NewLine}");
             }
 
             
@@ -153,7 +156,7 @@ class Rapport
             nyRapport.Rapportnummer = listRap.Count + 1;
             nyRapport.Utryckningsdatum = "2023/10/04";
             nyRapport.Polisstation = "Centrala polisstationen";
-            nyRapport.Beskrivning = $"En utryckning av typen {nyUtryckning.Typ} skedde på platsen {nyUtryckning.Plats} vid tid {nyUtryckning.Tidpunkt}. Poliser närvarande var: {nyUtryckning.Poliser}";
+            nyRapport.Beskrivning = $"En utryckning av typen {nyUtryckning.Typ} skedde på platsen {nyUtryckning.Plats} vid tid {nyUtryckning.Tidpunkt}. \nPoliser närvarande var: {nyUtryckning.Poliser}";
         }
         Console.WriteLine($"\nRapportnr: {nyRapport.Rapportnummer}.\nDatum: {nyRapport.Utryckningsdatum}\nAnsvarig station: {nyRapport.Polisstation}\nBeskrivning: {nyRapport.Beskrivning}");
         listRap.Add(nyRapport);
