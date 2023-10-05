@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.IO.Enumeration;
+using System.Text.Json;
 
 
 namespace Polis_1984;
@@ -41,10 +42,50 @@ namespace Polis_1984;
     {
             public static PolisLista polisLista = new PolisLista();
 
-            static void Main(string[] args)
+        static void Main(string[] args)
+        {
+            bool isRunning = true;
+            while (isRunning)
             {
-                List<Utryckning> listUtr = new List<Utryckning>();
-                Utryckning.nyUtryckning();
+                Console.WriteLine("=====Välj alternativ=====");
+                Console.WriteLine("[1] Registrera ny utryckning");
+                Console.WriteLine("[2] Registrera ny personal");
+                Console.WriteLine("[3] Visa lista av tidigare utryckningar");
+                Console.WriteLine("[4] Visa lista av rapporter");
+                Console.WriteLine("[5] Visa personallista");
+                Console.WriteLine("[a] Avsluta");
+                Console.Write("Val: ");
+                string strPick = Console.ReadLine()!;
+                if (int.TryParse(strPick, out int intPick) && intPick > 0 && intPick < 6)
+                {
+                    switch(intPick)
+                    {
+                        case 1:
+                            Utryckning.NyUtryckning();
+                        break;
+                        case 2:
+                        break;
+                        case 3:
+                            Utryckning.UtryckningsLista();
+                        break;
+                        case 4:
+                            Rapport.RapportLista();
+                        break;
+                        case 5:
+                        break;
+                        default:
+                        break;
+                    }
+                }
+                else if (strPick.ToLower() == "a")
+                {
+                    isRunning = false;
+                    Console.WriteLine("Avslutar...");
+                }
+                else
+                {
+                    Console.WriteLine("Ogiltigt val");
+                }
             }
             
         public static Polis ValjPolis(List<Polis> valdaPoliser)
@@ -88,19 +129,25 @@ namespace Polis_1984;
         }
     
     }
+    }
 
 class Utryckning
 {
-    public string Typ {get; set;}
-    public string Plats {get; set;}
-    public string Tidpunkt {get; set;}
-    public string Poliser {get; set;}
+    public string? Typ {get; set;}
+    public string? Plats {get; set;}
+    public string? Tidpunkt {get; set;}
+    public string? Poliser {get; set;}
 
     
 
-    public static void nyUtryckning()
+    public static void NyUtryckning()
     {
-        string fileName = "Utryckning.json";
+        string fileName;
+        #if DEBUG
+            fileName = "../Utryckning.json";
+        #else
+            fileName = "Utryckning.json";
+        #endif
         string jsonString = File.ReadAllText(fileName);
         List<Utryckning> listUtr = JsonSerializer.Deserialize<List<Utryckning>>(jsonString)!;
         List<Polis> valdaPoliser = new List<Polis>();
@@ -136,17 +183,27 @@ class Utryckning
         listUtr.Add(nyUtryckning);
         jsonString = JsonSerializer.Serialize(listUtr);
         File.WriteAllText(fileName, jsonString);
-        Rapport.nyRapport(nyUtryckning);
+        Rapport.NyRapport(nyUtryckning);
+    }
+    public static void UtryckningsLista()
+    {
+        string fileName = "Utryckning.json";
+        string jsonString = File.ReadAllText(fileName);
+        List<Utryckning> listUtr = JsonSerializer.Deserialize<List<Utryckning>>(jsonString)!;
+        for(int i = 0; i < listUtr.Count; i++)
+        {
+            Console.WriteLine($"{i+1}.\nTyp: {listUtr[i].Typ}\nPlats: {listUtr[i].Plats}\nTidpunkt: {listUtr[i].Tidpunkt}\nNärvarande poliser: {listUtr[i].Poliser}");
+        }
     }
 }
 
 class Rapport
 {
     public int Rapportnummer { get; set; }
-    public string Utryckningsdatum { get; set; }
-    public string Polisstation { get; set; }
-    public string Beskrivning { get; set; }
-    public static void nyRapport(Utryckning nyUtryckning)
+    public string? Utryckningsdatum { get; set; }
+    public string? Polisstation { get; set; }
+    public string? Beskrivning { get; set; }
+    public static void NyRapport(Utryckning nyUtryckning)
     {
         string fileName = "Rapport.json";
         string jsonString = File.ReadAllText(fileName);
@@ -163,6 +220,28 @@ class Rapport
         jsonString = JsonSerializer.Serialize(listRap);
         File.WriteAllText(fileName, jsonString);
     }
+    public static void RapportLista()
+    {
+        string fileName = "Rapport.json";
+        string jsonString = File.ReadAllText(fileName);
+        List<Rapport> listRap = JsonSerializer.Deserialize<List<Rapport>>(jsonString)!;
+        for(int i = 0; i < listRap.Count; i++)
+        {
+            Console.WriteLine($"Rapportnr: {listRap[i].Rapportnummer}.\nDatum: {listRap[i].Utryckningsdatum}\nAnsvarig station: {listRap[i].Polisstation}\nBeskrivning: {listRap[i].Beskrivning}");
+        }
+    }
 
 }
 
+class Polis
+{
+    public string namn;
+
+    public int tjanstenummer;
+
+    public Polis(string namn, int tjanstenummer)
+    {
+        this.namn = namn;
+        this.tjanstenummer = tjanstenummer;
+    }
+}
