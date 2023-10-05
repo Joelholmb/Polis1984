@@ -5,14 +5,14 @@ namespace Polis_1984;
 
     class PolisLista
     {
-        public List<Polis> listaAvPoliser = new List<Polis>();
+        public static List<Polis> listaAvPoliser = new List<Polis>();
 
         public PolisLista()
         {
             
-            listaAvPoliser.Add(new Polis("Kalle", 4334));
-            listaAvPoliser.Add(new Polis("Sudden", 7754));
-            listaAvPoliser.Add(new Polis("Majoren", 1239));
+            listaAvPoliser.Add(new Polis("Kalle Tjänstenr", 4334));
+            listaAvPoliser.Add(new Polis("Sudden Tjänstenr", 7754));
+            listaAvPoliser.Add(new Polis("Majoren Tjänstenr", 1239));
         }
 
         public List<Polis> HämtaPoliser()
@@ -25,7 +25,7 @@ namespace Polis_1984;
 
     class Program
     {
-            public PolisLista polisLista = new PolisLista();
+            public static PolisLista polisLista = new PolisLista();
 
             static void Main(string[] args)
             {
@@ -33,7 +33,7 @@ namespace Polis_1984;
                 Utryckning.nyUtryckning();
             }
             
-        public Polis ValjPolis(List<Polis> valdaPoliser)
+        public static Polis ValjPolis(List<Polis> valdaPoliser)
         {
             Console.WriteLine("Välj en polis från listan:");
             
@@ -42,6 +42,8 @@ namespace Polis_1984;
             {
                 Console.WriteLine($"{i + 1}. {listaAvPoliser[i].namn}");
             }
+
+            
 
                 int val;
                 while (true)
