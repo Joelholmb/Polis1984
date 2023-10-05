@@ -75,14 +75,10 @@ namespace Polis_1984;
 
 class Utryckning
 {
-    public int Rapportnummer { get; set; }
-    public string Utryckningsdatum { get; set; }
-    public string Polisstation { get; set; }
     public string Typ {get; set;}
     public string Plats {get; set;}
     public string Tidpunkt {get; set;}
-    public string Rapport { get; set; }
-    public string poliser {get; set;}
+    public string Poliser {get; set;}
 
     
 
@@ -110,46 +106,48 @@ class Utryckning
          
         
         Console.Clear();
-        
-        Console.WriteLine($"En utryckning av typen {typ} skedde på platsen {plats} vid tid {tidpunkt}. Poliser närvarande var:");
-        for(int i = 0; i < antal; i++)
-        {
-            Console.WriteLine($"{valdaPoliser[i].namn} {valdaPoliser[i].tjanstenummer}");
-        }
-            Console.WriteLine("\nDags att skriva en rapport");
-            Console.Write("Ange rapportnummer: ");
-            int rapportnummer = Convert.ToInt32(Console.ReadLine());
-
-            Console.Write("Ange datum för utryckningen (yyyy-MM-dd): ");
-            string utryckningsdatum =Console.ReadLine();
-
-
-            Console.Write("Ange namnet på polisstationen som hanterar ärendet: ");
-            string polisstation = Console.ReadLine();
-
-            Console.Write("Beskriv vad som skett under utryckningen: ");
-            string rapport = Console.ReadLine()!;
-        
-
-            Console.WriteLine($"\nRapportnr: {rapportnummer},\n{utryckningsdatum},\nAnsvarig station: {polisstation},\nBeskrivning: {rapport}");
 
         var nyUtryckning = new Utryckning();
         {
-        nyUtryckning.Rapportnummer = rapportnummer;
-        nyUtryckning.Utryckningsdatum = utryckningsdatum;
-        nyUtryckning.Typ = typ;
-        nyUtryckning.Plats = plats;
-        nyUtryckning.Tidpunkt = tidpunkt;
-        for(int i = 0; i < valdaPoliser.Count; i++)
-        {
-        nyUtryckning.poliser += $"|{valdaPoliser[i].namn} {valdaPoliser[i].tjanstenummer}|";
-        }
-        nyUtryckning.Rapport = rapport;
+            nyUtryckning.Typ = typ;
+            nyUtryckning.Plats = plats;
+            nyUtryckning.Tidpunkt = tidpunkt;
+            for(int i = 0; i < valdaPoliser.Count; i++)
+            {
+                nyUtryckning.Poliser += $"{valdaPoliser[i].namn} {valdaPoliser[i].tjanstenummer}";
+            }
         }
         listUtr.Add(nyUtryckning);
         jsonString = JsonSerializer.Serialize(listUtr);
         File.WriteAllText(fileName, jsonString);
+        Rapport.nyRapport(nyUtryckning);
     }
+}
+
+class Rapport
+{
+    public int Rapportnummer { get; set; }
+    public string Utryckningsdatum { get; set; }
+    public string Polisstation { get; set; }
+    public string Beskrivning { get; set; }
+    public static void nyRapport(Utryckning nyUtryckning)
+    {
+        string fileName = "Rapport.json";
+        string jsonString = File.ReadAllText(fileName);
+        List<Rapport> listRap = JsonSerializer.Deserialize<List<Rapport>>(jsonString)!;
+        var nyRapport = new Rapport();
+        {
+            nyRapport.Rapportnummer = listRap.Count + 1;
+            nyRapport.Utryckningsdatum = "2023/10/04";
+            nyRapport.Polisstation = "Centrala polisstationen";
+            nyRapport.Beskrivning = $"En utryckning av typen {nyUtryckning.Typ} skedde på platsen {nyUtryckning.Plats} vid tid {nyUtryckning.Tidpunkt}. Poliser närvarande var: {nyUtryckning.Poliser}";
+        }
+        Console.WriteLine($"\nRapportnr: {nyRapport.Rapportnummer}.\nDatum: {nyRapport.Utryckningsdatum}\nAnsvarig station: {nyRapport.Polisstation}\nBeskrivning: {nyRapport.Beskrivning}");
+        listRap.Add(nyRapport);
+        jsonString = JsonSerializer.Serialize(listRap);
+        File.WriteAllText(fileName, jsonString);
+    }
+
 }
 
 class Polis
