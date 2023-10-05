@@ -3,6 +3,17 @@
 
 namespace Polis_1984;
 
+    public class Polis
+    {
+        public string Namn { get; set;}
+        public int Tjanstenummer { get; set;}
+
+        public Polis(string namn, int tjanstenummer)
+        {
+            Namn = namn;
+            Tjanstenummer = tjanstenummer;
+        }
+    }
     class PolisLista
     {
         public static List<Polis> listaAvPoliser = new List<Polis>();
@@ -10,9 +21,9 @@ namespace Polis_1984;
         public PolisLista()
         {
             
-            listaAvPoliser.Add(new Polis("Kalle Tjänstenr", 4334));
-            listaAvPoliser.Add(new Polis("Sudden Tjänstenr", 7754));
-            listaAvPoliser.Add(new Polis("Majoren Tjänstenr", 1239));
+            listaAvPoliser.Add(new Polis("Kalle", 4334));
+            listaAvPoliser.Add(new Polis("Sudden", 7754));
+            listaAvPoliser.Add(new Polis("Majoren", 1239));
         }
 
         public List<Polis> HämtaPoliser()
@@ -40,7 +51,7 @@ namespace Polis_1984;
             List<Polis> listaAvPoliser = polisLista.HämtaPoliser();
             for (int i = 0; i < listaAvPoliser.Count; i++)
             {
-                Console.WriteLine($"{i + 1}. {listaAvPoliser[i].namn}");
+                Console.WriteLine($"{i + 1}. {listaAvPoliser[i].Namn} (Tjänstenummer: {listaAvPoliser[i].Tjanstenummer})");
             }
 
             
@@ -116,7 +127,7 @@ class Utryckning
             nyUtryckning.Tidpunkt = tidpunkt;
             for(int i = 0; i < valdaPoliser.Count; i++)
             {
-                nyUtryckning.Poliser += $"{valdaPoliser[i].namn} {valdaPoliser[i].tjanstenummer}";
+                nyUtryckning.Poliser += $"{valdaPoliser[i].Namn} {valdaPoliser[i].Tjanstenummer}";
             }
         }
         listUtr.Add(nyUtryckning);
@@ -152,15 +163,3 @@ class Rapport
 
 }
 
-class Polis
-{
-    public string namn;
-
-    public int tjanstenummer;
-
-    public Polis(string namn, int tjanstenummer)
-    {
-        this.namn = namn;
-        this.tjanstenummer = tjanstenummer;
-    }
-}
