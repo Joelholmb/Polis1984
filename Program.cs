@@ -22,12 +22,14 @@ namespace Polis_1984;
 
         public PolisLista()
         {
+            string fileName = "Personal.json";
+            string jsonString = File.ReadAllText(fileName);
+            listaAvPoliser = JsonSerializer.Deserialize<List<Polis>>(jsonString)!;
+            //listaAvPoliser.Add(new Polis("Kalle", 4334));
             
-            listaAvPoliser.Add(new Polis("Kalle", 4334));
-            
-            listaAvPoliser.Add(new Polis("Sudden", 7754));
+            //listaAvPoliser.Add(new Polis("Sudden", 7754));
            
-            listaAvPoliser.Add(new Polis("Majoren", 1239));
+            //listaAvPoliser.Add(new Polis("Majoren", 1239));
 
         }
 
@@ -37,12 +39,26 @@ namespace Polis_1984;
         }
         public static void PersonalLista()
         {
-            PolisLista polisLista = new PolisLista();
-            List<Polis> listaAvPoliser = polisLista.HämtaPoliser();
+            string fileName = "Personal.json";
+            string jsonString = File.ReadAllText(fileName);
+            listaAvPoliser = JsonSerializer.Deserialize<List<Polis>>(jsonString)!;
             for(int i = 0; i < listaAvPoliser.Count; i++)
             {
-                Console.WriteLine($"{listaAvPoliser[i].Namn}. Tjänstenummer: {listaAvPoliser[i].Tjanstenummer}");
+                Console.WriteLine($"{listaAvPoliser[i].Namn} Tjänstenummer: {listaAvPoliser[i].Tjanstenummer}");
             }
+        }
+        public static void NyPersonal()
+        {
+            string fileName = "Personal.json";
+            string jsonString = File.ReadAllText(fileName);
+            listaAvPoliser = JsonSerializer.Deserialize<List<Polis>>(jsonString)!;
+            Console.Write("Ange namn på polis som ska läggas till: ");
+            string namn = Console.ReadLine()!;
+            Console.Write("Ange tjänstenummer för polis som ska läggas till: ");
+            int tjänstenummer = Convert.ToInt32(Console.ReadLine());
+            listaAvPoliser.Add(new Polis(namn, tjänstenummer));
+            jsonString = JsonSerializer.Serialize(listaAvPoliser);
+            File.WriteAllText(fileName, jsonString);
         }
         
     }
@@ -105,6 +121,7 @@ namespace Polis_1984;
                             Utryckning.NyUtryckning();
                         break;
                         case 2:
+                            PolisLista.NyPersonal();
                         break;
                         case 3:
                             Utryckning.UtryckningsLista();
