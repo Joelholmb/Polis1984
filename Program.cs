@@ -68,7 +68,7 @@ namespace Polis_1984;
                     Polis valdPolis = listaAvPoliser[val - 1];
                     if (!valdaPoliser.Contains(valdPolis))
                     {
-                        listaAvPoliser.RemoveAt(val - 1);
+                        valdaPoliser.Add(valdPolis);
                         return valdPolis;
                     }
                     else
@@ -159,7 +159,6 @@ class Utryckning
         for(int i = 1; i <= antal; i++)
         {
             Polis valdPolis = Program.ValjPolis(valdaPoliser);
-            valdaPoliser.Add(valdPolis);
             Console.Clear();
             
         }
