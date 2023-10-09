@@ -61,7 +61,6 @@ namespace Polis_1984;
                     Polis valdPolis = listaAvPoliser[val - 1];
                     if (!valdaPoliser.Contains(valdPolis))
                     {
-                        valdaPoliser.Add(valdPolis);
                         listaAvPoliser.RemoveAt(val - 1);
                         return valdPolis;
                     }
@@ -137,12 +136,7 @@ class Utryckning
 
     public static void NyUtryckning()
     {
-        string fileName;
-        #if DEBUG
-            fileName = "../Utryckning.json";
-        #else
-            fileName = "Utryckning.json";
-        #endif
+        string fileName = "Utryckning.json";
         string jsonString = File.ReadAllText(fileName);
         List<Utryckning> listUtr = JsonSerializer.Deserialize<List<Utryckning>>(jsonString)!;
         List<Polis> valdaPoliser = new List<Polis>();
@@ -172,7 +166,14 @@ class Utryckning
             nyUtryckning.Tidpunkt = tidpunkt;
             for(int i = 0; i < valdaPoliser.Count; i++)
             {
-                nyUtryckning.Poliser += $"{valdaPoliser[i].Namn} {valdaPoliser[i].Tjanstenummer}";
+                if (i == 0)
+                {
+                    nyUtryckning.Poliser += $"{valdaPoliser[i].Namn} {valdaPoliser[i].Tjanstenummer}";
+                }
+                else
+                {
+                    nyUtryckning.Poliser += $", {valdaPoliser[i].Namn} {valdaPoliser[i].Tjanstenummer}";
+                }
             }
         }
         listUtr.Add(nyUtryckning);
