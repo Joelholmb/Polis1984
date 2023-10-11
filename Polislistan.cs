@@ -1,7 +1,5 @@
-using System;
 using System.Text.Json;
-using System.IO;
-using System.Collections.Generic;
+
 
 namespace Polis_1984
 {
@@ -14,10 +12,6 @@ namespace Polis_1984
             string fileName = "Personal.json";
             string jsonString = File.ReadAllText(fileName);
             listaAvPoliser = JsonSerializer.Deserialize<List<Polis>>(jsonString)!;
-            
-            listaAvPoliser.Add(new Polis("Kalle", 4334));
-            listaAvPoliser.Add(new Polis("Sudden", 7754));
-            listaAvPoliser.Add(new Polis("Majoren", 1239));
         }
 
         public List<Polis> HämtaPoliser()

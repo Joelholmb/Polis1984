@@ -1,4 +1,3 @@
-using System;
 
 namespace Polis_1984
 {
