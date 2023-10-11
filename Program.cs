@@ -91,8 +91,7 @@ class Utryckning
         int antal = Convert.ToInt32(Console.ReadLine());
         for(int i = 1; i <= antal; i++)
         {
-            Polis valdPolis = PolisValjare.ValjPolis(valdaPoliser);
-
+            Polis valdPolis = Program.ValjPolis(valdaPoliser);
             Console.Clear();
             
         }
