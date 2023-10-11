@@ -33,7 +33,7 @@ public class ConsoleUI
                         int antal = Convert.ToInt32(Console.ReadLine());
                         for(int i = 1; i <= antal; i++)
                         {
-                            Program.ValjPolis(valdaPoliser);
+                            PolisValjare.ValjPolis(valdaPoliser);
                             Console.Clear();
                         }
                         Utryckning.NyUtryckning(typ, plats, tidpunkt, valdaPoliser, out Utryckning nyUtryckning);
