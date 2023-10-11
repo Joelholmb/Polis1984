@@ -5,17 +5,7 @@ using System.Text.Json;
 
 namespace Polis_1984;
 
-    public class Polis
-    {
-        public string Namn { get; set;}
-        public int Tjanstenummer { get; set;}
-
-        public Polis(string namn, int tjanstenummer)
-        {
-            Namn = namn;
-            Tjanstenummer = tjanstenummer;
-        }
-    }
+    
     class PolisLista
     {
         public static List<Polis> listaAvPoliser = new List<Polis>();
@@ -25,11 +15,12 @@ namespace Polis_1984;
             string fileName = "Personal.json";
             string jsonString = File.ReadAllText(fileName);
             listaAvPoliser = JsonSerializer.Deserialize<List<Polis>>(jsonString)!;
-            //listaAvPoliser.Add(new Polis("Kalle", 4334));
             
-            //listaAvPoliser.Add(new Polis("Sudden", 7754));
+            listaAvPoliser.Add(new Polis("Kalle", 4334));
+            
+            listaAvPoliser.Add(new Polis("Sudden", 7754));
            
-            //listaAvPoliser.Add(new Polis("Majoren", 1239));
+            listaAvPoliser.Add(new Polis("Majoren", 1239));
 
         }
 
